@@ -41,8 +41,8 @@ RUN chmod -R 755 /var/www/*
 # Copy files
 COPY ./srcs/init.sh ./
 COPY ./srcs/nginx-conf /etc/nginx/sites-available/default
-COPY ./srcs/config.inc.php phpmyadmin
-COPY ./srcs/wp-config.php /var/www/html
+COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
+COPY ./srcs/wp-config.php /var/www/html/wordpress
 
 # Run init.sh
 CMD bash init.sh
