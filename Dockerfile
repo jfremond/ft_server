@@ -8,11 +8,11 @@ ENV AUTOINDEX on
 WORKDIR /var/www/html
 
 # Update packages && installations
-RUN apt-get update && apt-get upgrade -y \
-	vim \
-	wget \
-	nginx \
-	mariadb-server \
+RUN apt-get update && apt-get upgrade -y	\
+	vim										\
+	wget									\
+	nginx									\
+	mariadb-server							\
 	php7.3 php-mysql php-fpm php-pdo php-gd php-cli php-mbstring 
 	
 # Install PhpMyAdmin
@@ -31,7 +31,7 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=FR/ST=Paris/L=
 RUN chown -R www-data:www-data *
 RUN chmod -R 755 /var/www/*
 
-# Copy files
+# Copy and delete files
 COPY ./srcs/init.sh ./
 COPY ./srcs/nginx-conf-on ./
 COPY ./srcs/nginx-conf-off ./
@@ -39,6 +39,5 @@ COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
 COPY ./srcs/wp-config.php /var/www/html/wordpress
 RUN rm /var/www/html/index.nginx-debian.html
 
-RUN echo ${AUTOINDEX}
 # Run init.sh
 CMD bash init.sh
