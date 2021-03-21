@@ -1,30 +1,20 @@
 # Install Debian Buster
 FROM debian:buster
 
-# Update packages
-RUN apt-get update && apt-get upgrade -y \
+# Export AUTOINDEX
+RUN export AUTOINDEX on
 
 # Working Directory
 WORKDIR /var/www/html
 
-# AUTOINDEX
-RUN export AUTOINDEX=on
-
-# Install vim
-RUN apt-get -y install vim
-
-# Install wget
-RUN apt-get -y install wget
-
-# Install Nginx
-RUN apt-get -y install nginx
-
-# Install MariaDB
-RUN apt-get -y install mariadb-server
-
-# Install php
-RUN apt-get -y install php7.3 php-mysql php-fpm php-pdo php-gd php-cli php-mbstring
-
+# Update packages && installations
+RUN apt-get update && apt-get upgrade -y \
+	vim \
+	wget \
+	nginx \
+	mariadb-server \
+	php7.3 php-mysql php-fpm php-pdo php-gd php-cli php-mbstring 
+	
 # Install PhpMyAdmin
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz
 RUN tar -xf phpMyAdmin-5.0.1-english.tar.gz && rm -rf phpMyAdmin-5.0.1-english.tar.gz
@@ -48,6 +38,6 @@ COPY ./srcs/nginx-conf-off ./
 COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
 COPY ./srcs/wp-config.php /var/www/html/wordpress
 RUN rm /var/www/html/index.nginx-debian.html
-#RUN if [ "${AUTOINDEX}" = "on" ]; then cp nginx-conf-on /etc/nginx/sites-available/default; else cp nginx-conf-off /etc/nginx/sites-available/default; fi;
+
 # Run init.sh
 CMD bash init.sh

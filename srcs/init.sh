@@ -1,4 +1,4 @@
-if [[ ${AUTOINDEX} = "on" ]]
+if [[ ${AUTOINDEX} = on ]]
 then
 	cp nginx-conf-on /etc/nginx/sites-available/default
 else
@@ -15,5 +15,4 @@ echo "update mysql.user set plugin='' where user='root';" |mysql -u root --skip-
 
 service php7.3-fpm start
 service nginx start
-#sleep infinity
 bash
