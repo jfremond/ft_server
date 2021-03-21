@@ -2,7 +2,7 @@
 FROM debian:buster
 
 # Export AUTOINDEX
-RUN export AUTOINDEX on
+ENV AUTOINDEX on
 
 # Working Directory
 WORKDIR /var/www/html
@@ -39,5 +39,6 @@ COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
 COPY ./srcs/wp-config.php /var/www/html/wordpress
 RUN rm /var/www/html/index.nginx-debian.html
 
+RUN echo ${AUTOINDEX}
 # Run init.sh
 CMD bash init.sh
