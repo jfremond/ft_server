@@ -2,7 +2,13 @@
 FROM debian:buster
 
 # Update packages
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && apt-get upgrade -y \
+
+# Working Directory
+WORKDIR /var/www/html
+
+# AUTOINDEX
+RUN export AUTOINDEX=on
 
 # Install vim
 RUN apt-get -y install vim
@@ -18,9 +24,6 @@ RUN apt-get -y install mariadb-server
 
 # Install php
 RUN apt-get -y install php7.3 php-mysql php-fpm php-pdo php-gd php-cli php-mbstring
-
-# Working Directory
-WORKDIR /var/www/html
 
 # Install PhpMyAdmin
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz
@@ -40,9 +43,11 @@ RUN chmod -R 755 /var/www/*
 
 # Copy files
 COPY ./srcs/init.sh ./
-COPY ./srcs/nginx-conf /etc/nginx/sites-available/default
+COPY ./srcs/nginx-conf-on ./
+COPY ./srcs/nginx-conf-off ./
 COPY ./srcs/config.inc.php /var/www/html/phpmyadmin
 COPY ./srcs/wp-config.php /var/www/html/wordpress
-
+RUN rm /var/www/html/index.nginx-debian.html
+#RUN if [ "${AUTOINDEX}" = "on" ]; then cp nginx-conf-on /etc/nginx/sites-available/default; else cp nginx-conf-off /etc/nginx/sites-available/default; fi;
 # Run init.sh
 CMD bash init.sh
