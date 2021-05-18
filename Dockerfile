@@ -41,3 +41,5 @@ RUN rm /var/www/html/index.nginx-debian.html
 
 # Run init.sh
 CMD bash init.sh
+
+EXPOSE 80 443
